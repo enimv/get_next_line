@@ -1,60 +1,42 @@
-#include <stdio.h>
-
-#include <unistd.h>
-int main()
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aoueldma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/06 03:00:12 by aoueldma          #+#    #+#             */
+/*   Updated: 2022/01/06 03:00:37 by aoueldma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "get_next_line.h"
+char    *get_next_line(int   fd)
 {
- FILE *df;
- fd = fopen(test.txt , "r");    
+    static char *left;
+    char        *buf;
+    int         i;
+    int         ret;
+    char        *line;
+
+    i = 0;
+    ret = 1;
+    buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    if (!buf)
+        return (NULL);
+    while (!ft_strrchr(buf, '\n') && ret != 0)
+    {
+        ret = read(fd,  buf, BUFFER_SIZE);
+        if (ret == -1)
+            return (NULL);
+        buf[ret] = '\0';
+        left = ft_strjoin(left, buf); 
+    }
+    free(buf);
+    buf = NULL;
+    while (left[i] != '\n')
+        i++;
+    line = ft_substr(left, 0, (i + 1));
+    left = ft_newline(left, i + 1);
+    return (line);
 }
 
-
-
-char* mygets(char str[], size_t len, int fileno) {
-    size_t count;
-    for (count = 0; count < len; ++count) {
-        int result;
-        if (result = read(fileno, str + count, 1), result != 1) {
-            if (result == 0) {
-                if (count > 0) {
-                    str[count] = 0;
-                    return str;
-                } else {
-                    if (count == 0) {
-                        return NULL;
-                    }
-                }
-            } else {
-                perror("read");
-                return NULL;
-            }
-        } else {
-            if (str[count] == '\n') {
-                if (count < len - 1) {
-                    str[count + 1] = 0;
-                } else {
-                    str[count] = 0;
-                }
-                return str;
-            }
-        }
-    }
-    if (count < len) {
-        str[count] = 0;
-    }
-    return str;
-}
-
-int main(int argc, char* argv[]) {
-    char line[LINELEN + EXTRACHARS];
-    char* filename = argv[1];
-    int fd = open(filename, O_RDONLY);
-    if (fd < 0) {
-        perror("open");
-        return EXIT_FAILURE;
-    }
-    while (mygets(line, LINELEN + EXTRACHARS, fd)) {
-        printf(line);
-    }
-    close(fd);
-    return EXIT_SUCCESS;
-}
