@@ -27,16 +27,44 @@ char    *get_next_line(int   fd)
     {
         ret = read(fd,  buf, BUFFER_SIZE);
         if (ret == -1)
+        {
+            free(buf);
+            buf = NULL;
             return (NULL);
+        }
         buf[ret] = '\0';
         left = ft_strjoin(left, buf); 
     }
     free(buf);
     buf = NULL;
-    while (left[i] != '\n')
+    while (left[i] != '\n' && left[i])
         i++;
     line = ft_substr(left, 0, (i + 1));
+    if (line == NULL)
+    {
+        free(left);
+        left = NULL;
+    }
     left = ft_newline(left, i + 1);
     return (line);
+}
+
+#include <stdio.h>
+
+int main()
+{
+    int no;
+    FILE *v;
+    v = fopen("test.txt", "r");
+    no = fileno(v);
+
+    printf("%s", get_next_line(no));
+    printf("%s", get_next_line(no));
+    printf("%s", get_next_line(no));
+    printf("%s", get_next_line(no));
+    printf("%s", get_next_line(no));
+    printf("%s", get_next_line(no));
+    printf("%s", get_next_line(no));
+    printf("%s", get_next_line(no));
 }
 

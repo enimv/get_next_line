@@ -7,13 +7,14 @@ int    ft_strrchr(char *s, int c)
 
     i = 0;
     if (!s)
-        return(-1);
-    while (s[i] != c)
+        return(0);
+    while (s[i])
     {
-        return (0);
+        if(s[i] == c)
+            return (1);
         i++;
     }
-    return (1);
+    return (0);
 }
 
 size_t ft_strlen(char  *str)
@@ -44,10 +45,10 @@ char    *ft_strjoin(char   *s1, char  *s2)
     if (s1)
     {
     while (s1[i] != '\0')
-    {
+        {
         ft[c++] = s1[i++];
-    }
         }
+    }
     i = 0;
     while (s2[i] != '\0')
     {
@@ -90,6 +91,8 @@ char    *ft_newline(char *left, int  i)
     int      a;
 
     a = 0;
+    if (!left)
+        return (NULL);
     newline = malloc(sizeof(char) * (ft_strlen(left) - i) + 1); 
     if (!newline)
         return (NULL);
