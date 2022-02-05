@@ -23,48 +23,48 @@ char    *get_next_line(int   fd)
     buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
     if (!buf)
         return (NULL);
+    buf[0] = '\0';
     while (!ft_strrchr(buf, '\n') && ret != 0)
     {
         ret = read(fd,  buf, BUFFER_SIZE);
         if (ret == -1)
         {
             free(buf);
-            buf = NULL;
+            //buf = NULL;
             return (NULL);
         }
         buf[ret] = '\0';
         left = ft_strjoin(left, buf); 
     }
     free(buf);
-    buf = NULL;
+    //buf = NULL;
     while (left[i] != '\n' && left[i])
         i++;
     line = ft_substr(left, 0, (i + 1));
+    left = ft_newline(left, i);
     if (line == NULL)
     {
         free(left);
         left = NULL;
     }
-    left = ft_newline(left, i + 1);
     return (line);
 }
 
-#include <stdio.h>
+// #include <stdio.h>
 
-int main()
-{
-    int no;
-    FILE *v;
-    v = fopen("test.txt", "r");
-    no = fileno(v);
-
-    printf("%s", get_next_line(no));
-    printf("%s", get_next_line(no));
-    printf("%s", get_next_line(no));
-    printf("%s", get_next_line(no));
-    printf("%s", get_next_line(no));
-    printf("%s", get_next_line(no));
-    printf("%s", get_next_line(no));
-    printf("%s", get_next_line(no));
-}
-
+// int main()
+// {
+//     int no;
+//     FILE *v;
+//     v = fopen("gnlTester/files/empty", "r");
+//     no = fileno(v);
+//     printf("%s", get_next_line(no));
+//     printf("%s", get_next_line(no));
+//     printf("%s", get_next_line(no));
+//     printf("%s", get_next_line(no));
+//     printf("%s", get_next_line(no));
+//     printf("%s", get_next_line(no));
+//     printf("%s", get_next_line(no));
+//     printf("%s", get_next_line(no));
+//     system("leaks a.out");
+// }

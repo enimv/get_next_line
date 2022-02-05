@@ -81,7 +81,6 @@ char    *ft_substr(char *s, unsigned int start, size_t len)
         start++;
     }
     s2[i] = '\0';
-    free(s);
     return (s2);
 }
 
@@ -91,6 +90,8 @@ char    *ft_newline(char *left, int  i)
     int      a;
 
     a = 0;
+    if (left[i] == '\n')
+        i++;
     if (!left)
         return (NULL);
     newline = malloc(sizeof(char) * (ft_strlen(left) - i) + 1); 
@@ -101,5 +102,6 @@ char    *ft_newline(char *left, int  i)
         newline[a++] = left[i++]; 
     }
     newline[a] = '\0';
+    free(left);
     return (newline);
 }
